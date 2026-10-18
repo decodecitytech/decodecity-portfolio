@@ -1,0 +1,223 @@
+/* ==========================================================================
+   DECODECITY — 21ST.DEV & AWWWARDS INSPIRED DESIGN SYSTEM
+   Luminous Modern Tech, Dynamic Island, Clean Architecture
+   ========================================================================== */
+
+:root {
+  /* Brand Canvas & Surfaces */
+  --bg-canvas: #FBFBFA;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #F6F7F9;
+  --bg-dark: #0A0B0D;
+  --bg-dark-surface: #121316;
+  --bg-dark-card: #18191E;
+
+  /* Typography */
+  --text-main: #0B0C0E;
+  --text-sub: #545863;
+  --text-muted: #888C96;
+  --text-inverse: #FFFFFF;
+  --text-inverse-muted: #9BA0AC;
+
+  /* Brand Accents */
+  --accent-orange: #F89D13;
+  --accent-coral: #E25B2D;
+  --accent-violet: #7B2CFF;
+  --accent-blue: #22A7F3;
+
+  /* Iridescent Text Gradient */
+  --gradient-brand: linear-gradient(135deg, #F89D13 10%, #E85B2D 42%, #8533FF 78%, #22A7F3 100%);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(248, 157, 19, 0.12) 0%, rgba(34, 167, 243, 0.05) 50%, transparent 80%);
+
+  /* Borders & Dividers */
+  --border-light: rgba(0, 0, 0, 0.08);
+  --border-subtle: rgba(0, 0, 0, 0.04);
+  --border-dark: #24262E;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(11, 12, 14, 0.03);
+  --shadow-md: 0 8px 24px rgba(11, 12, 14, 0.06);
+  --shadow-lg: 0 16px 48px -8px rgba(11, 12, 14, 0.09);
+  --shadow-island: 0 16px 36px -10px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+
+  /* Fonts */
+  --font-sans: var(--font-sans-primary), "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-mono), SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  line-height: 1.55;
+  overflow-x: hidden;
+  max-width: 100vw;
+  position: relative;
+}
+
+/* Master Layout Container */
+.main-canvas {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 28px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .main-canvas {
+    padding: 0 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-canvas {
+    padding: 0 14px;
+  }
+}
+
+/* Iridescent Text Gradient */
+.text-gradient {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+/* Standardized Section Padding */
+.section-pad {
+  padding: 100px 0;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .section-pad {
+    padding: 64px 0;
+  }
+}
+
+/* Minimalist Eyebrow Badge */
+.eyebrow-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.04);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-light);
+  margin-bottom: 14px;
+}
+
+.eyebrow-dark {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: var(--text-inverse-muted);
+}
+
+/* Headings */
+.heading-title {
+  font-size: clamp(2.3rem, 4vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  color: var(--text-main);
+  margin-bottom: 16px;
+}
+
+.heading-sub {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--text-sub);
+  max-width: 620px;
+}
+
+/* Pill CTA Buttons */
+.btn-pill-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: var(--bg-dark);
+  color: var(--text-inverse);
+  padding: 14px 28px;
+  border-radius: 9999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: 1px solid var(--bg-dark);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(10, 11, 13, 0.12);
+  text-decoration: none;
+}
+
+.btn-pill-dark:hover {
+  background-color: #1a1c22;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(10, 11, 13, 0.2);
+}
+
+.btn-pill-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  padding: 14px 26px;
+  border-radius: 9999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: 1px solid var(--border-light);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+}
+
+.btn-pill-light:hover {
+  background-color: var(--bg-surface-elevated);
+  border-color: var(--text-main);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: #D8D8D4;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B0B0AC;
+}
