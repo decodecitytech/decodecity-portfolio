@@ -36,6 +36,8 @@ interface ContactSectionProps {
     }>
   >;
   contactFormSubmitted: boolean;
+  contactFormSubmitting?: boolean;
+  contactFormError?: string | null;
   selectedCityDistrict: number;
   setSelectedCityDistrict: (idx: number) => void;
   onSubmitContact: (e: React.FormEvent) => void;
@@ -49,6 +51,8 @@ export function ContactSection({
   contactFormData,
   setContactFormData,
   contactFormSubmitted,
+  contactFormSubmitting,
+  contactFormError,
   selectedCityDistrict,
   setSelectedCityDistrict,
   onSubmitContact,
@@ -231,7 +235,18 @@ export function ContactSection({
               </p>
             </div>
 
-            <form onSubmit={onSubmitContact} className={styles.appleForm}>
+            <form
+              onSubmit={onSubmitContact}
+              className={styles.appleForm}
+              action="https://formspree.io/f/xeaedrej"
+              method="POST"
+            >
+              {/* Formspree Metadata */}
+              <input type="hidden" name="_subject" value="New DecodeCity Project Architecture Inquiry" />
+              <input type="hidden" name="formType" value="Studio & Project Configurator" />
+              <input type="hidden" name="category" value={contactFormData.category} />
+              <input type="hidden" name="budget" value={contactFormData.budget} />
+
               {/* Step 1: Target Capability */}
               <div className={styles.appleFormField}>
                 <label className={styles.appleFormLabel}>01. SELECT CAPABILITY SECTOR *</label>
@@ -261,6 +276,7 @@ export function ContactSection({
                   <label className={styles.appleFormLabel}>02. FULL NAME &amp; ROLE *</label>
                   <input
                     type="text"
+                    name="name"
                     required
                     placeholder="Alex Henderson, Founder / CTO"
                     value={contactFormData.name}
@@ -272,6 +288,7 @@ export function ContactSection({
                   <label className={styles.appleFormLabel}>03. WORK EMAIL *</label>
                   <input
                     type="email"
+                    name="email"
                     required
                     placeholder="alex@company.com"
                     value={contactFormData.email}
@@ -285,6 +302,7 @@ export function ContactSection({
                 <label className={styles.appleFormLabel}>04. PHONE / WHATSAPP (OPTIONAL)</label>
                 <input
                   type="tel"
+                  name="phone"
                   placeholder="+91 98765 43210 / +1 (415)..."
                   value={contactFormData.phone}
                   onChange={(e) => setContactFormData({ ...contactFormData, phone: e.target.value })}
@@ -319,6 +337,7 @@ export function ContactSection({
               <div className={styles.appleFormField}>
                 <label className={styles.appleFormLabel}>06. PROJECT GOALS &amp; DESIRED TIMELINE *</label>
                 <textarea
+                  name="message"
                   rows={4}
                   required
                   placeholder="Outline what you are building, target user flows, required tech stack integrations, and desired launch deadline..."
@@ -329,14 +348,27 @@ export function ContactSection({
               </div>
 
               {/* Apple Signature Pill Submit Button */}
-              <button type="submit" className={styles.appleSubmitBtn}>
+              <button
+                type="submit"
+                className={styles.appleSubmitBtn}
+                disabled={contactFormSubmitting}
+              >
                 <span>
-                  {contactFormSubmitted
+                  {contactFormSubmitting
+                    ? "Transmitting Specification to Architects..."
+                    : contactFormSubmitted
                     ? "✓ SPECIFICATION TRANSMITTED TO BENGALURU ARCHITECTS"
                     : "Request Private Architecture Briefing"}
                 </span>
                 <ArrowRight size={17} />
               </button>
+
+              {/* Error Message */}
+              {contactFormError && (
+                <div style={{ color: "#ff4d4f", fontSize: "0.85rem", marginTop: "8px", textAlign: "center" }}>
+                  {contactFormError}
+                </div>
+              )}
 
               {/* Confirmation Card */}
               {contactFormSubmitted && (

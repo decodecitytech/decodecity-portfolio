@@ -24,6 +24,8 @@ export default function Home() {
   // Modal Form State
   const [formData, setFormData] = useState({ name: "", email: "", scope: "" });
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formSubmitting, setFormSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   // Section Interaction States
   const [hoveredBuilding, setHoveredBuilding] = useState<BuildingId | null>(null);
@@ -43,6 +45,8 @@ export default function Home() {
     details: "",
   });
   const [contactFormSubmitted, setContactFormSubmitted] = useState(false);
+  const [contactFormSubmitting, setContactFormSubmitting] = useState(false);
+  const [contactFormError, setContactFormError] = useState<string | null>(null);
   const [selectedCityDistrict, setSelectedCityDistrict] = useState(0);
 
   // Dynamic Island Scroll Listener
@@ -68,30 +72,89 @@ export default function Home() {
     }
   };
 
-  const handleModalSubmit = (e: React.FormEvent) => {
+  const handleModalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormSubmitted(true);
-    setTimeout(() => {
-      setFormSubmitted(false);
-      setIsModalOpen(false);
-      setFormData({ name: "", email: "", scope: "" });
-    }, 2200);
+    setFormSubmitting(true);
+    setFormError(null);
+    try {
+      const res = await fetch("https://formspree.io/f/xeaedrej", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          formType: "Modal: Architecture Brief & Scoping",
+          name: formData.name,
+          email: formData.email,
+          message: formData.scope,
+          scope: formData.scope,
+        }),
+      });
+
+      if (res.ok) {
+        setFormSubmitted(true);
+        setTimeout(() => {
+          setFormSubmitted(false);
+          setIsModalOpen(false);
+          setFormData({ name: "", email: "", scope: "" });
+        }, 3000);
+      } else {
+        const data = await res.json().catch(() => null);
+        setFormError(data?.error || "Submission error. Please try again.");
+      }
+    } catch {
+      setFormError("Network error. Please try again or reach out via email.");
+    } finally {
+      setFormSubmitting(false);
+    }
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setContactFormSubmitted(true);
-    setTimeout(() => {
-      setContactFormSubmitted(false);
-      setContactFormData({
-        name: "",
-        email: "",
-        phone: "",
-        category: "01 Web & Products",
-        budget: "₹49,000 — ₹95,000 / MVP Sprint",
-        details: "",
+    setContactFormSubmitting(true);
+    setContactFormError(null);
+    try {
+      const res = await fetch("https://formspree.io/f/xeaedrej", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          formType: "Studio & Project Configurator",
+          name: contactFormData.name,
+          email: contactFormData.email,
+          phone: contactFormData.phone,
+          category: contactFormData.category,
+          budget: contactFormData.budget,
+          message: contactFormData.details,
+          details: contactFormData.details,
+        }),
       });
-    }, 4000);
+
+      if (res.ok) {
+        setContactFormSubmitted(true);
+        setTimeout(() => {
+          setContactFormSubmitted(false);
+          setContactFormData({
+            name: "",
+            email: "",
+            phone: "",
+            category: "01 Web & Products",
+            budget: "₹49,000 — ₹95,000 / MVP Sprint",
+            details: "",
+          });
+        }, 5000);
+      } else {
+        const data = await res.json().catch(() => null);
+        setContactFormError(data?.error || "Submission error. Please try again.");
+      }
+    } catch {
+      setContactFormError("Network error. Please try again or reach out via email.");
+    } finally {
+      setContactFormSubmitting(false);
+    }
   };
 
   const navItems = ["Services", "Work", "Process", "Pricing", "Reviews", "Contact"];
@@ -194,6 +257,8 @@ export default function Home() {
         contactFormData={contactFormData}
         setContactFormData={setContactFormData}
         contactFormSubmitted={contactFormSubmitted}
+        contactFormSubmitting={contactFormSubmitting}
+        contactFormError={contactFormError}
         selectedCityDistrict={selectedCityDistrict}
         setSelectedCityDistrict={setSelectedCityDistrict}
         onSubmitContact={handleContactSubmit}
@@ -211,6 +276,8 @@ export default function Home() {
         formData={formData}
         setFormData={setFormData}
         formSubmitted={formSubmitted}
+        formSubmitting={formSubmitting}
+        formError={formError}
         onSubmit={handleModalSubmit}
         styles={styles}
       />

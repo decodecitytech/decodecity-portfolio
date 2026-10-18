@@ -17,6 +17,8 @@ interface ProjectModalProps {
     }>
   >;
   formSubmitted: boolean;
+  formSubmitting?: boolean;
+  formError?: string | null;
   onSubmit: (e: React.FormEvent) => void;
   styles: Record<string, string>;
 }
@@ -27,6 +29,8 @@ export function ProjectModal({
   formData,
   setFormData,
   formSubmitted,
+  formSubmitting,
+  formError,
   onSubmit,
   styles,
 }: ProjectModalProps) {
@@ -54,11 +58,21 @@ export function ProjectModal({
           </button>
         </div>
 
-        <form onSubmit={onSubmit} className={styles.modalForm}>
+        <form
+          onSubmit={onSubmit}
+          className={styles.modalForm}
+          action="https://formspree.io/f/xeaedrej"
+          method="POST"
+        >
+          {/* Formspree Metadata */}
+          <input type="hidden" name="_subject" value="New DecodeCity Modal Architecture Brief" />
+          <input type="hidden" name="formType" value="Modal: Architecture Brief & Scoping" />
+
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>Your Name</label>
             <input
               type="text"
+              name="name"
               required
               placeholder="e.g. Alex Henderson"
               value={formData.name}
@@ -71,6 +85,7 @@ export function ProjectModal({
             <label className={styles.inputLabel}>Work Email</label>
             <input
               type="email"
+              name="email"
               required
               placeholder="alex@company.com"
               value={formData.email}
@@ -82,6 +97,7 @@ export function ProjectModal({
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>What are you looking to build?</label>
             <textarea
+              name="message"
               rows={4}
               required
               placeholder="Tell us about your project (Web & Product, Enterprise CRM, AI Automations, Cloud Fabric, Telemetry)..."
@@ -96,9 +112,19 @@ export function ProjectModal({
               type="submit"
               className={styles.btnStartProject}
               style={{ width: "100%", justifyContent: "center" }}
+              disabled={formSubmitting}
             >
-              {formSubmitted ? "✓ SPECIFICATION TRANSMITTED TO SENIOR ARCHITECT" : "Submit Architecture Brief →"}
+              {formSubmitting
+                ? "Transmitting Brief to Architects..."
+                : formSubmitted
+                ? "✓ SPECIFICATION TRANSMITTED TO SENIOR ARCHITECT"
+                : "Submit Architecture Brief →"}
             </button>
+            {formError && (
+              <span style={{ fontSize: "0.85rem", color: "#ff4d4f", textAlign: "center" }}>
+                {formError}
+              </span>
+            )}
             <span style={{ fontSize: "0.75rem", color: "#86868B", textAlign: "center" }}>
               Direct response from our Bengaluru technology lead within 12 hours. Mutual NDA executed prior.
             </span>
